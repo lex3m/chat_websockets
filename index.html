@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Docker Chat</title>
+  </head>
+  <body>
+    <h2>Chat</h2>
+
+    <div
+      id="chat"
+      style="
+        width: 300px;
+        height: 200px;
+        border: 1px solid black;
+        overflow: auto;
+      "
+    ></div>
+    <br />
+
+    <input id="msg" type="text" placeholder="Ваше повідомлення" />
+    <button onclick="sendMsg()">Відправити</button>
+
+    <script>
+      let ws = new WebSocket('ws://localhost:8765');
+      let chat = document.getElementById('chat');
+
+      ws.onmessage = (event) => {
+        chat.innerHTML += event.data + '<br>';
+      };
+
+      function sendMsg() {
+        let text = document.getElementById('msg').value;
+        ws.send(text);
+        document.getElementById('msg').value = '';
+      }
+    </script>
+  </body>
+</html>
